@@ -1,0 +1,107 @@
+{
+  "resina-standard": {
+    "arquivo": "img/resina-standard.jpg",
+    "legenda": "Maquete impressa em resina numa impressora SLA industrial (à esquerda). Mostra a escala, não a nossa resina.",
+    "credito": "Victuallers",
+    "licenca": "CC BY-SA 4.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:3d_printed_model_of_Malawi_University_of_Business_and_Applied_Sciences.jpg"
+  },
+  "silicone-platina": {
+    "arquivo": "img/silicone-platina.jpg",
+    "legenda": "Molde de silicone com um ladrilho desmoldado.",
+    "credito": "Pfehrman",
+    "licenca": "CC BY-SA 3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Silicone_mold.jpg"
+  },
+  "pu-fundicao": {
+    "arquivo": "img/pu-fundicao.jpg",
+    "legenda": "Molde de silicone bipartido usado para fundir bonecos em resina.",
+    "credito": "Alessio from Brescia, Italy",
+    "licenca": "CC BY 2.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Silicone_mold_resin_cast_figure.jpg"
+  },
+  "cold-cast-bronze": {
+    "arquivo": "img/cold-cast-bronze.jpg",
+    "legenda": "Referência de aparência: cabeça de bronze maciço antes e depois da pátina. Cold cast imita esse resultado.",
+    "credito": "MatthiasKabel",
+    "licenca": "CC BY-SA 3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Bronze_head_(Glyptothek_Munich_457)_with_and_without_patina_Bunte_G%C3%B6tter_exhibition.jpg"
+  },
+  "gesso-hidrocal": {
+    "arquivo": "img/gesso-hidrocal.jpg",
+    "legenda": "Molde de gesso para fundir a parte de trás de uma figura de terracota.",
+    "credito": "Autor desconhecido",
+    "licenca": "Public domain",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Casting_mold_Louvre_CA5969.jpg"
+  },
+  "porcelana-barbotina": {
+    "arquivo": "img/porcelana-barbotina.jpg",
+    "legenda": "Oficina de coulage, a fundição de barbotina em molde, na manufatura de Sèvres.",
+    "credito": "Coyau",
+    "licenca": "CC BY-SA 3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:S%C3%A8vres_-_Petit_coulage_-_retouche_18.jpg"
+  },
+  "aerografia": {
+    "arquivo": "img/aerografia.jpg",
+    "legenda": "Artista pintando com aerógrafo na perna de uma criança.",
+    "credito": "Tomwsulcer",
+    "licenca": "CC0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Airbrush_artist_painting_temporary_art_on_leg_of_child.JPG"
+  },
+  "eletrodeposicao-cobre": {
+    "arquivo": "img/eletrodeposicao-cobre.jpg",
+    "legenda": "Componente de alumínio com acabamento cobreado.",
+    "credito": "Steve Mokris (photographer), Erie Plating Company (plated part)",
+    "licenca": "CC BY-SA 1.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Polished_copper_on_aluminum.jpg"
+  },
+  "eletrodeposicao-niquel": {
+    "arquivo": "img/eletrodeposicao-niquel.jpg",
+    "legenda": "Nódulo de níquel depositado por eletrodeposição.",
+    "credito": "Paul from Enschede, The Netherlands",
+    "licenca": "CC BY-SA 2.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Nickel_Nodule_obtained_by_Electroplating.jpg"
+  },
+  "folha-de-ouro": {
+    "arquivo": "img/folha-de-ouro.jpg",
+    "legenda": "Folha de ouro.",
+    "credito": "Juangonzalez64 at English Wikipedia",
+    "licenca": "Public domain",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Goldleaf.jpg"
+  },
+  "patina-figado-enxofre": {
+    "arquivo": "img/patina-figado-enxofre.jpg",
+    "legenda": "Escultura de bronze com pátina marrom-escura, o tom que o fígado de enxofre dá em cobre e bronze.",
+    "credito": "Daderot",
+    "licenca": "CC0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:David_with_the_Head_of_Goliath_by_Marius-Jean-Antonin_Merci%C3%A9,_after_1872,_bronze_with_dark_brown_patina,_gilded_and_silvered_-_Cincinnati_Art_Museum_-_DSC04325.JPG"
+  },
+  "craquele": {
+    "arquivo": "img/craquele.jpg",
+    "legenda": "Vaso com esmalte craquelado de reflexo púrpura.",
+    "credito": "Titian Studio",
+    "licenca": "CC BY 4.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Vase_(AM_9242-1).jpg"
+  },
+  "fosforescente": {
+    "arquivo": "img/fosforescente.jpg",
+    "legenda": "Pigmento luminescente aplicado no mostrador de um relógio de mergulho.",
+    "credito": "Francis Flinch",
+    "licenca": "Public domain",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Luminescent_paint_pigment_applied_on_a_diver%E2%80%99s_watch_to_make_it_readable_in_low_light_conditions..jpg"
+  },
+  "tinta-efeito-cromo": {
+    "arquivo": "img/tinta-efeito-cromo.jpg",
+    "legenda": "Exercício de aerógrafo com efeito de cromo.",
+    "credito": "Airbrush",
+    "licenca": "CC BY-SA 4.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Airbrush-%C4%87wiczenia-efekt-chromu.jpg"
+  },
+  "pos-cura-uv": {
+    "arquivo": "img/pos-cura-uv.jpg",
+    "legenda": "Duas lâmpadas de cura UV.",
+    "credito": "ッ Zach Hoeken ッ from Brooklyn, NY, USA",
+    "licenca": "CC BY-SA 2.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:UV_Curing_Lamps_(2498027114).jpg"
+  }
+}

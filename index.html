@@ -1,0 +1,1073 @@
+<title>Mostruário de Materiais</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<style>
+/* Layout: mostruário de ateliê. Cada verbete é uma ficha de amostra (cor em cima, furo de leque,
+   etiqueta datilografada embaixo) sobre uma bancada cinza-esverdeada; abas de fichário trocam as quatro vistas. */
+:root {
+  --bancada: #e3e7e2;
+  --papel: #f8f9f6;
+  --papel-2: #eceeea;
+  --tinta: #1a2321;
+  --tinta-2: #55625d;
+  --linha: #c3cac4;
+  --carimbo: #17506b;
+  --st-pesquisado: #586a7b;
+  --st-testado: #8f5a00;
+  --st-aprovado: #23704a;
+  --st-descartado: #b0392d;
+  --sobre-status: #ffffff;
+  --brilho: rgba(255, 255, 255, .22);
+  --sombra: rgba(20, 30, 28, .22);
+
+  --f-display: "Archivo", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --f-texto: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --t-1: .75rem;
+  --t-2: .875rem;
+  --t-3: 1rem;
+  --t-4: 1.25rem;
+  --t-5: 1.75rem;
+  --t-6: clamp(2.1rem, 7vw, 3.4rem);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bancada: #141918; --papel: #1d2423; --papel-2: #262f2d; --tinta: #e6ebe8; --tinta-2: #9aa7a2; --linha: #38433f;
+    --carimbo: #7cc0de;
+    --st-pesquisado: #9fb0c0; --st-testado: #e2a941; --st-aprovado: #62c08e; --st-descartado: #ef7f71; --sobre-status: #141918;
+    --brilho: rgba(255, 255, 255, .14); --sombra: rgba(0, 0, 0, .5);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bancada: #141918; --papel: #1d2423; --papel-2: #262f2d; --tinta: #e6ebe8; --tinta-2: #9aa7a2; --linha: #38433f;
+  --carimbo: #7cc0de;
+  --st-pesquisado: #9fb0c0; --st-testado: #e2a941; --st-aprovado: #62c08e; --st-descartado: #ef7f71; --sobre-status: #141918;
+  --brilho: rgba(255, 255, 255, .14); --sombra: rgba(0, 0, 0, .5);
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+body { background: var(--bancada); color: var(--tinta); font: 400 var(--t-3)/1.55 var(--f-texto); }
+.pagina {
+  max-width: 76rem; margin-inline: auto; padding-block: 1.5rem 3rem;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: flex; flex-direction: column; gap: 1.5rem;
+}
+h1, h2, h3, h4, p, ul, ol, dl, dd, figure { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+a { color: var(--carimbo); text-underline-offset: .15em; }
+code { font: 500 .9em var(--f-mono); overflow-wrap: anywhere; }
+:focus-visible { outline: 2px solid var(--carimbo); outline-offset: 2px; }
+h2:focus { outline: none; }
+
+/* Rótulo datilografado: etiquetas, ids, datas, contagens. */
+.mono, .rotulo, .campo label { font: 500 var(--t-1)/1.4 var(--f-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--tinta-2); }
+.mudo { color: var(--tinta-2); font-size: var(--t-2); }
+
+/* Topo */
+.topo { display: flex; flex-direction: column; gap: .75rem; }
+.topo h1 { font: 800 var(--t-6)/.95 var(--f-display); font-stretch: 68%; text-transform: uppercase; text-wrap: balance; }
+.topo-sub { max-width: 60ch; color: var(--tinta-2); }
+.cartela { display: flex; height: .5rem; background: var(--linha); }
+.cartela span { flex: 1 1 0; }
+.abas { display: flex; flex-wrap: wrap; gap: .25rem; border-bottom: 1px solid var(--tinta); }
+.abas a {
+  font: 500 var(--t-1)/1 var(--f-mono); letter-spacing: .06em; text-transform: uppercase; text-decoration: none;
+  color: var(--tinta-2); padding: .7rem .9rem; border: 1px solid transparent; border-bottom: 0; margin-bottom: -1px;
+}
+.abas a:hover { color: var(--tinta); }
+.abas a[aria-current="page"] { color: var(--tinta); background: var(--papel); border-color: var(--tinta); box-shadow: 0 1px 0 var(--papel); }
+@media (max-width: 30rem) { .abas a { padding-inline: .45rem; letter-spacing: 0; } }
+
+[hidden] { display: none !important; }
+
+/* Estado: carregando, erro, vazio */
+.estado { border: 1px dashed var(--tinta-2); padding: 1.25rem; display: flex; flex-direction: column; gap: .6rem; max-width: 46rem; }
+.estado h2 { font: 700 var(--t-4)/1.2 var(--f-display); font-stretch: 85%; }
+
+/* Ferramentas da lista */
+.ferramentas { display: flex; flex-direction: column; gap: .9rem; }
+.campo { display: flex; flex-direction: column; gap: .35rem; min-width: 0; }
+#busca {
+  width: 100%; max-width: 30rem; font: 400 var(--t-3)/1.3 var(--f-texto); color: var(--tinta);
+  background: var(--papel); border: 1px solid var(--tinta-2); border-radius: 2px; padding: .6rem .75rem;
+}
+#busca::placeholder { color: var(--tinta-2); }
+.chips { display: flex; flex-wrap: wrap; gap: .4rem; }
+.chip {
+  display: inline-flex; align-items: center; gap: .45rem; min-height: 2.25rem; padding: .3rem .7rem; cursor: pointer;
+  font: 500 var(--t-2)/1.2 var(--f-texto); color: var(--tinta); background: var(--papel);
+  border: 1px solid var(--linha); border-radius: 2px;
+}
+.chip:hover { border-color: var(--tinta-2); }
+.chip[aria-pressed="true"] { background: var(--tinta); color: var(--papel); border-color: var(--tinta); }
+.chip-n { font: 500 var(--t-1)/1 var(--f-mono); opacity: .7; font-variant-numeric: tabular-nums; }
+.contagem { font: 500 var(--t-2)/1.4 var(--f-mono); color: var(--tinta-2); font-variant-numeric: tabular-nums; }
+
+/* Status: a cor vem de --st, escolhida pelo atributo data-status. */
+[data-status] { --st: var(--tinta-2); }
+[data-status="pesquisado"] { --st: var(--st-pesquisado); }
+[data-status="testado"] { --st: var(--st-testado); }
+[data-status="aprovado"] { --st: var(--st-aprovado); }
+[data-status="descartado"] { --st: var(--st-descartado); }
+.ponto { width: .6rem; height: .6rem; border-radius: 50%; background: var(--st); flex: none; }
+.pilula {
+  display: inline-flex; align-items: center; gap: .4rem; padding: .2rem .6rem .2rem .5rem; border-radius: 999px;
+  font: 500 var(--t-1)/1.3 var(--f-mono); letter-spacing: .04em; text-transform: uppercase; white-space: nowrap;
+  color: var(--st); background: color-mix(in srgb, var(--st) 12%, var(--papel));
+  border: 1px solid color-mix(in srgb, var(--st) 45%, var(--papel));
+}
+
+/* Dificuldade: cinco marcas, preenchidas até a nota. */
+.dif { display: inline-flex; align-items: center; gap: .45rem; font: 500 var(--t-1)/1 var(--f-mono); color: var(--tinta-2); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.dif-barras { display: inline-flex; gap: 2px; }
+.dif-barras span { width: .45rem; height: .8rem; border: 1px solid var(--tinta-2); }
+.dif-barras span.on { background: var(--tinta); border-color: var(--tinta); }
+
+/* Grupos e fichas */
+#grupos { display: flex; flex-direction: column; gap: 2.25rem; margin-top: 1.75rem; }
+.grupo { display: flex; flex-direction: column; gap: .75rem; }
+.grupo-topo { display: flex; flex-direction: column; gap: .15rem; border-top: 1px solid var(--tinta); padding-top: .6rem; }
+.grupo-topo h2 { font: 700 var(--t-4)/1.15 var(--f-display); font-stretch: 78%; text-transform: uppercase; letter-spacing: .02em; display: flex; flex-wrap: wrap; align-items: baseline; gap: .6rem; }
+.grade { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr)); gap: 1rem; }
+.cartao {
+  position: relative; display: flex; flex-direction: column; min-width: 0; text-decoration: none; color: var(--tinta);
+  background: var(--papel); border: 1px solid var(--linha); border-radius: 3px; overflow: hidden;
+}
+.cartao:hover { border-color: var(--tinta); }
+@media (prefers-reduced-motion: no-preference) {
+  .cartao { transition: transform .15s ease, border-color .15s ease; }
+  .cartao:hover { transform: translateY(-2px); }
+}
+.amostra { position: relative; aspect-ratio: 16 / 9; max-width: 100%; overflow: hidden; display: grid; place-items: center; background: var(--papel-2); }
+.amostra img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.amostra--cor { background: linear-gradient(135deg, var(--brilho), transparent 55%), var(--cor); }
+.amostra--vazia { background: repeating-linear-gradient(135deg, var(--papel-2) 0 .5rem, var(--papel) .5rem 1rem); }
+.amostra--vazia span { background: var(--papel); padding: .1rem .5rem; }
+.amostra::after { content: ""; position: absolute; top: .55rem; left: .55rem; width: .6rem; height: .6rem; border-radius: 50%; background: var(--bancada); box-shadow: inset 0 1px 2px var(--sombra); }
+.selo {
+  font: 600 var(--t-1)/1 var(--f-mono); letter-spacing: .08em; text-transform: uppercase;
+  color: var(--tinta); background: var(--papel); border: 1px dashed var(--tinta); padding: .25rem .45rem; transform: rotate(-3deg);
+}
+.cartao .selo { position: absolute; top: .55rem; right: .55rem; }
+.cartao-etiqueta { padding: .4rem .75rem; border-bottom: 1px solid var(--linha); overflow-wrap: anywhere; text-transform: none; letter-spacing: 0; }
+.cartao-corpo { display: flex; flex-direction: column; gap: .35rem; padding: .7rem .75rem .85rem; }
+.cartao-corpo h3 { font: 700 1.125rem/1.2 var(--f-display); font-stretch: 85%; text-wrap: balance; }
+.cartao-corpo p { font-size: var(--t-2); line-height: 1.5; color: var(--tinta-2); }
+.cartao-pe { margin-top: auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem; padding: .6rem .75rem; border-top: 1px solid var(--linha); }
+
+/* Ficha do verbete */
+.voltar { font: 500 var(--t-2)/1 var(--f-mono); text-decoration: none; align-self: flex-start; padding-block: .4rem; }
+.voltar:hover { text-decoration: underline; }
+#vista-verbete, #vista-matriz, #vista-compatibilidade, #vista-historico { display: flex; flex-direction: column; gap: 1.25rem; }
+.ficha { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 21rem); grid-template-areas: "topo lado" "corpo lado"; gap: 1.25rem 2.5rem; align-items: start; }
+.ficha-topo { grid-area: topo; display: flex; flex-direction: column; gap: .6rem; min-width: 0; }
+.ficha-topo h2 { font: 800 var(--t-5)/1.05 var(--f-display); font-stretch: 75%; text-wrap: balance; }
+.ficha-marcas { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem .9rem; }
+.ficha-resumo { font-size: 1.125rem; line-height: 1.5; max-width: 62ch; }
+.ficha-lado { grid-area: lado; display: flex; flex-direction: column; background: var(--papel); border: 1px solid var(--linha); border-radius: 3px; overflow: hidden; min-width: 0; }
+.ficha-lado .amostra { aspect-ratio: 4 / 3; }
+.ficha-dados { display: grid; grid-template-columns: auto minmax(0, 1fr); }
+.ficha-dados dt, .ficha-dados dd { padding: .55rem .75rem; border-top: 1px solid var(--linha); }
+.ficha-dados dd { font-size: var(--t-2); overflow-wrap: anywhere; display: flex; flex-wrap: wrap; align-items: center; gap: .4rem; }
+.ficha-corpo { grid-area: corpo; display: flex; flex-direction: column; gap: 1.6rem; min-width: 0; }
+@media (max-width: 52rem) {
+  .ficha { grid-template-columns: minmax(0, 1fr); grid-template-areas: "topo" "lado" "corpo"; }
+}
+.secao { display: flex; flex-direction: column; gap: .55rem; min-width: 0; }
+.secao > h3 { font: 500 var(--t-1)/1.4 var(--f-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--tinta-2); border-top: 1px solid var(--linha); padding-top: .55rem; }
+.prosa { max-width: 65ch; white-space: pre-line; overflow-wrap: break-word; }
+.seguranca { border: 1px solid var(--st-testado); background: color-mix(in srgb, var(--st-testado) 9%, var(--papel)); padding: .75rem .9rem; gap: .3rem; }
+.seguranca > h3 { border: 0; padding: 0; color: var(--st-testado); }
+.refs { display: flex; flex-wrap: wrap; gap: .5rem; }
+.ref { display: inline-flex; align-items: center; gap: .45rem; padding: .35rem .65rem; font-size: var(--t-2); line-height: 1.3; text-decoration: none; color: var(--tinta); background: var(--papel); border: 1px solid var(--linha); border-radius: 2px; }
+a.ref:hover { border-color: var(--tinta); }
+.ref--falta { border-style: dashed; color: var(--tinta-2); }
+.receita { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: .6rem .9rem; align-items: start; }
+.receita dt { padding-top: .5rem; }
+.receita ol { display: flex; flex-wrap: wrap; gap: .5rem; counter-reset: passo; }
+.receita ol li { counter-increment: passo; display: inline-flex; align-items: center; gap: .4rem; }
+.receita ol li::before { content: counter(passo); font: 500 var(--t-1)/1 var(--f-mono); color: var(--tinta-2); }
+.lista { display: flex; flex-direction: column; gap: .5rem; max-width: 65ch; }
+.lista li { font-size: var(--t-2); overflow-wrap: anywhere; }
+.galeria { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 13rem), 1fr)); gap: 1rem; }
+.galeria figure { display: flex; flex-direction: column; gap: .35rem; min-width: 0; }
+.galeria img, .galeria .falta { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; background: var(--papel-2); border: 1px solid var(--linha); }
+.galeria .falta { display: grid; place-items: center; padding: .5rem; text-align: center; overflow-wrap: anywhere; text-transform: none; letter-spacing: 0; }
+.galeria figcaption { font-size: var(--t-2); line-height: 1.4; display: flex; flex-direction: column; gap: .15rem; }
+.outros { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: .3rem .9rem; font-size: var(--t-2); }
+.outros dd { overflow-wrap: anywhere; }
+.tecnica { border-collapse: collapse; width: 100%; max-width: 34rem; font-size: var(--t-2); }
+.tecnica th, .tecnica td { padding: .45rem 0; text-align: left; vertical-align: top; }
+.tecnica tr + tr > * { border-top: 1px solid var(--linha); }
+.tecnica th { width: 55%; padding-right: .9rem; font-weight: 400; color: var(--tinta-2); }
+.tecnica td { font: 500 var(--t-2)/1.5 var(--f-mono); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.niveis { display: flex; flex-direction: column; gap: 1.1rem; max-width: 46rem; }
+.nivel-grupo { display: flex; flex-direction: column; gap: .5rem; }
+.nivel-grupo h4 { display: flex; align-items: center; gap: .5rem; font: 700 var(--t-3)/1.2 var(--f-display); font-stretch: 85%; }
+.aceita { display: flex; flex-direction: column; gap: .6rem; }
+.aceita li { display: grid; grid-template-columns: minmax(0, 13rem) minmax(0, 1fr); gap: .25rem .9rem; align-items: start; font-size: var(--t-2); }
+.aceita .ref { justify-self: start; max-width: 100%; }
+.aceita-nota { display: flex; flex-direction: column; align-items: flex-start; gap: .15rem; padding-top: .35rem; overflow-wrap: anywhere; }
+@media (max-width: 34rem) {
+  .aceita li { grid-template-columns: minmax(0, 1fr); }
+  .aceita-nota { padding-top: 0; }
+}
+
+/* Matriz */
+.vista-topo { display: flex; flex-direction: column; gap: .4rem; }
+.vista-topo h2 { font: 800 var(--t-5)/1.05 var(--f-display); font-stretch: 75%; text-transform: uppercase; }
+.vista-topo p { max-width: 65ch; color: var(--tinta-2); }
+.legenda { display: flex; flex-wrap: wrap; gap: .5rem 1.1rem; }
+.legenda li { display: inline-flex; align-items: center; gap: .45rem; font-size: var(--t-2); }
+.matriz-rolo { overflow-x: auto; background: var(--papel); border: 1px solid var(--linha); border-radius: 3px; }
+.matriz { border-collapse: separate; border-spacing: 0; font-size: var(--t-2); }
+.matriz th, .matriz td { border-right: 1px solid var(--linha); border-bottom: 1px solid var(--linha); padding: .35rem; text-align: center; vertical-align: middle; }
+.matriz tr > :last-child { border-right: 0; }
+.matriz tbody tr:last-child > * { border-bottom: 0; }
+.matriz .canto, .matriz .lin { position: sticky; left: 0; z-index: 1; background: var(--papel); text-align: left; border-right: 1px solid var(--tinta); }
+.matriz .canto { vertical-align: bottom; padding: .6rem .7rem; }
+.matriz .lin { padding: .5rem .7rem; min-width: 8.5rem; max-width: 13rem; font-weight: 500; line-height: 1.3; }
+.matriz .lin a, .matriz .col a { color: var(--tinta); text-decoration: none; }
+.matriz .lin a:hover, .matriz .col a:hover { color: var(--carimbo); text-decoration: underline; }
+.matriz .lin a { display: inline-flex; align-items: center; gap: .5rem; }
+.matriz .lin .ponto { border-radius: 2px; width: .8rem; height: .8rem; border: 1px solid var(--linha); }
+.matriz .gru { background: var(--papel-2); padding: .45rem .6rem; text-align: left; white-space: nowrap; }
+.matriz .col { vertical-align: bottom; padding: .6rem .35rem; min-width: 2.6rem; font-weight: 400; line-height: 1.25; }
+.matriz .col a, .matriz .col span { display: inline-block; writing-mode: vertical-rl; transform: rotate(180deg); max-height: 12rem; text-align: left; }
+.matriz .ini { border-left: 1px solid var(--tinta-2); }
+.matriz td { min-width: 2.6rem; }
+.matriz .nada { color: var(--linha); }
+.marcas { display: inline-flex; flex-wrap: wrap; justify-content: center; gap: .2rem; }
+.marca { display: inline-grid; place-items: center; width: 1.75rem; height: 1.75rem; flex: none; background: var(--st); color: var(--sobre-status); font: 600 var(--t-1)/1 var(--f-mono); text-decoration: none; border-radius: 2px; }
+a.marca:hover { outline: 2px solid var(--tinta); outline-offset: 1px; }
+
+/* Compatibilidade: a forma diz o nível (cheio, meio, xis, ponto); a cor só reforça, vinda de --nv. */
+[data-nivel] { --nv: var(--tinta-2); }
+[data-nivel="sim"] { --nv: var(--st-aprovado); }
+[data-nivel="cuidado"] { --nv: var(--st-testado); }
+[data-nivel="nao"] { --nv: var(--st-descartado); }
+.forma { display: inline-block; flex: none; width: .95rem; height: .95rem; border: 2px solid var(--nv); border-radius: 50%; }
+.forma[data-nivel="sim"] { background: var(--nv); }
+.forma[data-nivel="cuidado"] { background: linear-gradient(90deg, var(--nv) 50%, transparent 50%); }
+.forma[data-nivel="nao"] {
+  border: 0; border-radius: 0; transform: rotate(45deg);
+  background: linear-gradient(var(--nv), var(--nv)) center / 100% 3px no-repeat, linear-gradient(var(--nv), var(--nv)) center / 3px 100% no-repeat;
+}
+.forma[data-nivel="sem-dado"] { border: 0; background: radial-gradient(circle, var(--nv) 0 .13rem, transparent .17rem); }
+.compat-rolo { --col1: clamp(8.5rem, 36vw, 13rem); scroll-padding-left: var(--col1); }
+.compat .canto, .compat .lin, .compat .grupo-marca { width: var(--col1); min-width: var(--col1); max-width: var(--col1); overflow-wrap: anywhere; }
+.compat .grupo-marca { position: sticky; left: 0; z-index: 1; background: var(--papel-2); text-align: left; padding: .45rem .7rem; border-right: 1px solid var(--tinta); }
+.compat .grupo-resto { background: var(--papel-2); }
+.compat tbody:not(:last-child) tr:last-child > * { border-bottom: 1px solid var(--linha); }
+.compat td { padding: 0; }
+.nivel { display: grid; place-items: center; width: 100%; min-width: 2.75rem; height: 2.75rem; padding: 0; border: 0; border-radius: 0; background: none; color: inherit; cursor: pointer; }
+.nivel:hover { background: var(--papel-2); }
+.nivel[aria-pressed="true"] { background: var(--papel-2); box-shadow: inset 0 0 0 2px var(--tinta); }
+.nivel:focus-visible { outline-offset: -2px; }
+.painel { display: flex; flex-direction: column; gap: .45rem; max-width: 46rem; min-height: 8rem; padding: .9rem 1rem; background: var(--papel); border: 1px solid var(--linha); border-radius: 3px; }
+.painel h3 { font: 700 1.125rem/1.25 var(--f-display); font-stretch: 85%; overflow-wrap: anywhere; }
+.painel > a { align-self: flex-start; }
+.painel-nivel { display: flex; align-items: center; gap: .5rem; font-weight: 500; }
+
+/* Histórico */
+.dias { display: flex; flex-direction: column; gap: 1.5rem; }
+.dia { display: grid; grid-template-columns: 8rem minmax(0, 1fr); gap: .5rem 1rem; border-top: 1px solid var(--tinta); padding-top: .6rem; }
+.dia h3 { font: 500 var(--t-2)/1.5 var(--f-mono); font-variant-numeric: tabular-nums; }
+.dia ul { display: flex; flex-direction: column; gap: .7rem; }
+.dia li { display: flex; flex-direction: column; gap: .1rem; max-width: 65ch; }
+.dia li a { font-weight: 500; align-self: flex-start; }
+@media (max-width: 34rem) { .dia { grid-template-columns: minmax(0, 1fr); } }
+
+/* Rodapé */
+.rodape { border-top: 1px solid var(--tinta); padding-top: .9rem; display: flex; flex-direction: column; gap: .3rem; font-size: var(--t-2); color: var(--tinta-2); }
+</style>
+
+<div class="pagina">
+  <header class="topo">
+    <p class="mono" id="topo-linha">Glossário do ateliê</p>
+    <h1>Mostruário de Materiais</h1>
+    <p class="topo-sub">Do que os Papais Noéis são feitos e como cada material fica depois de cada processo.</p>
+    <div class="cartela" id="cartela" aria-hidden="true"></div>
+    <nav class="abas" aria-label="Vistas">
+      <a href="#" data-vista="lista">Verbetes</a>
+      <a href="#matriz" data-vista="matriz">Matriz</a>
+      <a href="#compatibilidade" data-vista="compatibilidade">Compatibilidade</a>
+      <a href="#historico" data-vista="historico">Histórico</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="vista-estado" class="estado" aria-live="polite">
+      <h2>Carregando materiais.json</h2>
+      <p class="mudo">Os verbetes aparecem aqui assim que o arquivo de dados chegar.</p>
+    </section>
+
+    <section id="vista-lista" hidden>
+      <div class="ferramentas">
+        <div class="campo">
+          <label for="busca">Buscar</label>
+          <input id="busca" type="search" placeholder="nome, marca, resumo ou detalhes" autocomplete="off" spellcheck="false">
+        </div>
+        <div class="campo">
+          <span class="rotulo" id="rotulo-categoria">Categoria</span>
+          <div class="chips" id="filtro-categoria" role="group" aria-labelledby="rotulo-categoria"></div>
+        </div>
+        <div class="campo">
+          <span class="rotulo" id="rotulo-status">Status</span>
+          <div class="chips" id="filtro-status" role="group" aria-labelledby="rotulo-status"></div>
+        </div>
+        <p class="contagem" id="contagem" role="status"></p>
+      </div>
+      <div id="grupos"></div>
+    </section>
+
+    <section id="vista-verbete" hidden></section>
+    <section id="vista-matriz" hidden></section>
+    <section id="vista-compatibilidade" hidden></section>
+    <section id="vista-historico" hidden></section>
+  </main>
+
+  <footer class="rodape">
+    <p id="rodape-versao"></p>
+    <p>Como corrigir: comente nesta página ou edite <code>docs/glossario/materiais.json</code> no repositório.</p>
+  </footer>
+</div>
+
+<script src="materiais.js" onerror="this.remove()"></script>
+<script>
+/* ===== DADOS =====
+   Funções puras, sem DOM. O teste-dados.mjs roda este script inteiro em Node (sem `document`)
+   e lê as funções em globalThis.GlossarioDados. */
+
+// Categorias que viram colunas da matriz, na ordem dos grupos.
+const CATEGORIAS_COLUNA = ['processo', 'acabamento', 'metalizacao'];
+// Níveis de compatibilidade entre resina e processo, na ordem em que aparecem na página.
+const NIVEIS = [
+  { id: 'sim', nome: 'Sim' },
+  { id: 'cuidado', nome: 'Com cuidado' },
+  { id: 'nao', nome: 'Não' },
+  { id: 'sem-dado', nome: 'Sem dado' },
+];
+// Rótulos da ficha técnica, na ordem de exibição. Chave fora daqui aparece depois, com o próprio nome.
+const ROTULOS_FICHA = {
+  viscosidade: 'Viscosidade',
+  shore_d: 'Dureza Shore D',
+  alongamento: 'Alongamento na ruptura',
+  tracao: 'Resistência à tração',
+  hdt: 'Temperatura de deflexão (HDT)',
+  contracao: 'Contração',
+  transparencia: 'Transparência',
+  comprimento_onda: 'Comprimento de onda',
+};
+const MESES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+
+const porNome = (a, b) => String(a.nome).localeCompare(String(b.nome), 'pt-BR');
+
+// Minúsculas e sem acento, para a busca achar "eletrodeposicao" em "Eletrodeposição".
+function normalizar(texto) {
+  return String(texto ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+}
+
+// Filtra por texto (todas as palavras precisam aparecer em nome, marca, resumo ou detalhes),
+// categoria e status. Critério vazio não filtra.
+function filtrar(verbetes, { texto = '', categoria = '', status = '' } = {}) {
+  const termos = normalizar(texto).split(/\s+/).filter(Boolean);
+  return verbetes.filter(v => {
+    if (categoria && v.categoria !== categoria) return false;
+    if (status && v.status !== status) return false;
+    if (!termos.length) return true;
+    const alvo = normalizar([v.nome, v.marca, v.resumo, v.detalhes].join(' '));
+    return termos.every(t => alvo.includes(t));
+  });
+}
+
+// Agrupa na ordem de `categorias`, com os verbetes de cada grupo em ordem alfabética.
+// Categoria que não está na lista vai para um grupo próprio no fim.
+function agrupar(verbetes, categorias) {
+  const conhecidas = new Set(categorias.map(c => c.id));
+  const extras = [...new Set(verbetes.map(v => v.categoria).filter(c => !conhecidas.has(c)))]
+    .map(id => ({ id, nome: id ? `Categoria "${id}"` : 'Sem categoria', descricao: 'Não está na lista de categorias do JSON.' }));
+  return [...categorias, ...extras]
+    .map(categoria => ({ categoria, verbetes: verbetes.filter(v => v.categoria === categoria.id).sort(porNome) }))
+    .filter(g => g.verbetes.length);
+}
+
+function chaveCelula(material, processo) {
+  return `${material}|${processo}`;
+}
+
+// Matriz material × processo. Linhas: verbetes `base`. Colunas: processo, acabamento e metalizacao,
+// em grupos. Linhas e colunas ficam na ordem do JSON. `celulas[chaveCelula(linha, coluna)]` lista os
+// verbetes `resultado` daquela combinação. `fora` são os resultados que não caem em nenhuma célula.
+function montarMatriz(verbetes, categorias = []) {
+  const linhas = verbetes.filter(v => v.categoria === 'base');
+  const grupos = CATEGORIAS_COLUNA
+    .map(id => ({
+      id,
+      nome: categorias.find(c => c.id === id)?.nome ?? id,
+      colunas: verbetes.filter(v => v.categoria === id),
+    }))
+    .filter(g => g.colunas.length);
+  const idsLinha = new Set(linhas.map(v => v.id));
+  const idsColuna = new Set(grupos.flatMap(g => g.colunas.map(c => c.id)));
+  const celulas = {};
+  const fora = [];
+  for (const r of verbetes) {
+    if (r.categoria !== 'resultado') continue;
+    const material = r.combina?.material;
+    const processos = [...new Set(r.combina?.processos ?? [])].filter(p => idsColuna.has(p));
+    if (!idsLinha.has(material) || !processos.length) { fora.push(r); continue; }
+    for (const p of processos) (celulas[chaveCelula(material, p)] ??= []).push(r);
+  }
+  return { linhas, grupos, celulas, fora };
+}
+
+// Todas as entradas de histórico, da mais recente para a mais antiga, cada uma com o id e o nome do verbete.
+function montarHistorico(verbetes) {
+  return verbetes
+    .flatMap(v => (v.historico ?? []).map(h => ({ data: String(h.data ?? ''), nota: String(h.nota ?? ''), id: v.id, nome: v.nome })))
+    .sort((a, b) => b.data.localeCompare(a.data) || porNome(a, b));
+}
+
+// Resultados que usam o verbete `id` como material ou como processo.
+function resultadosQueUsam(verbetes, id) {
+  return verbetes.filter(v => v.categoria === 'resultado'
+    && (v.combina?.material === id || (v.combina?.processos ?? []).includes(id)));
+}
+
+// Imagens a mostrar para um verbete: as próprias; sem nenhuma, as do tipo genérico (`tipo`), marcadas com doTipo.
+function imagensDe(v, indice) {
+  if (v?.imagens?.length) return { imagens: v.imagens, doTipo: null };
+  const tipo = v?.tipo ? indice.get(v.tipo) : null;
+  return tipo?.imagens?.length ? { imagens: tipo.imagens, doTipo: tipo } : { imagens: [], doTipo: null };
+}
+
+// Itens válidos de `compatibilidade`: os que citam um processo. Campo ausente ou malformado vira lista vazia.
+function citacoes(compatibilidade) {
+  return (Array.isArray(compatibilidade) ? compatibilidade : []).filter(c => typeof c?.processo === 'string' && c.processo);
+}
+
+// Nível fora da lista (ou ausente) conta como "sem-dado".
+function nivelValido(nivel) {
+  return NIVEIS.some(n => n.id === nivel) ? nivel : 'sem-dado';
+}
+
+// Grade resina × processo. Linhas: verbetes com `compatibilidade` não vazia, na ordem do JSON.
+// Colunas: todos os processos citados, na ordem da categoria do verbete do processo (a de `categorias`)
+// e depois pelo nome; processo sem verbete vai para o fim, com `existe: false`.
+// `celulas[chaveCelula(linha, coluna)]` existe para todo par: `{ nivel, nota, fonte, citado }`.
+// Par que a resina não cita vem como "sem-dado", com `citado: false`.
+function montarCompatibilidade(verbetes, categorias = []) {
+  const indice = new Map(verbetes.map(v => [v.id, v]));
+  const linhas = verbetes.filter(v => citacoes(v.compatibilidade).length);
+  const posicao = categoria => {
+    const i = categorias.findIndex(c => c.id === categoria);
+    return i === -1 ? categorias.length : i;
+  };
+  const colunas = [...new Set(linhas.flatMap(v => citacoes(v.compatibilidade).map(c => c.processo)))]
+    .map(id => ({ id, nome: indice.get(id)?.nome ?? id, categoria: indice.get(id)?.categoria ?? '', existe: indice.has(id) }))
+    .sort((a, b) => posicao(a.categoria) - posicao(b.categoria) || porNome(a, b));
+  const celulas = {};
+  for (const linha of linhas) {
+    for (const coluna of colunas) celulas[chaveCelula(linha.id, coluna.id)] = { nivel: 'sem-dado', nota: '', fonte: '', citado: false };
+    for (const c of citacoes(linha.compatibilidade)) {
+      const celula = celulas[chaveCelula(linha.id, c.processo)];
+      // Processo citado duas vezes pelo mesmo verbete: vale a primeira citação.
+      if (!celula.citado) Object.assign(celula, { nivel: nivelValido(c.nivel), nota: String(c.nota ?? ''), fonte: String(c.fonte ?? ''), citado: true });
+    }
+  }
+  return { linhas, colunas, celulas };
+}
+
+// Agrupa verbetes por `marca`, as marcas em ordem alfabética e os verbetes de cada uma por nome.
+// Quem não tem marca vai para o grupo "Tipos genéricos" (`marca: ''`), no fim.
+function agruparPorMarca(verbetes) {
+  const grupos = new Map();
+  for (const v of verbetes) {
+    const marca = typeof v.marca === 'string' ? v.marca.trim() : '';
+    if (!grupos.has(marca)) grupos.set(marca, []);
+    grupos.get(marca).push(v);
+  }
+  return [...grupos]
+    .map(([marca, lista]) => ({ marca, nome: marca || 'Tipos genéricos', verbetes: lista.sort(porNome) }))
+    .sort((a, b) => (a.marca === '') - (b.marca === '') || porNome(a, b));
+}
+
+// Itens de `compatibilidade` de um verbete, em grupos na ordem de NIVEIS. Nível sem item não vira grupo.
+function agruparPorNivel(compatibilidade) {
+  return NIVEIS
+    .map(nivel => ({ nivel, itens: citacoes(compatibilidade).filter(c => nivelValido(c.nivel) === nivel.id) }))
+    .filter(g => g.itens.length);
+}
+
+// Linhas da ficha técnica: `{ chave, rotulo, valor }`, as chaves conhecidas na ordem de ROTULOS_FICHA
+// e as demais na ordem do JSON, com o nome da chave como rótulo ("modulo_flexao" vira "Modulo flexao").
+function linhasFicha(ficha) {
+  if (typeof ficha !== 'object' || ficha === null || Array.isArray(ficha)) return [];
+  const conhecida = chave => Object.hasOwn(ROTULOS_FICHA, chave);
+  const chaves = Object.keys(ficha).filter(chave => ficha[chave] != null && ficha[chave] !== '');
+  return [...Object.keys(ROTULOS_FICHA).filter(chave => chaves.includes(chave)), ...chaves.filter(chave => !conhecida(chave))]
+    .map(chave => {
+      const livre = chave.replace(/[_-]+/g, ' ').trim();
+      return {
+        chave,
+        rotulo: conhecida(chave) ? ROTULOS_FICHA[chave] : livre.charAt(0).toUpperCase() + livre.slice(1),
+        valor: typeof ficha[chave] === 'string' ? ficha[chave] : JSON.stringify(ficha[chave]),
+      };
+    });
+}
+
+// "2026-11-25" vira "25 nov 2026". Texto fora desse formato volta como veio.
+function formatarData(iso) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(iso ?? ''));
+  return m && MESES[m[2] - 1] ? `${Number(m[3])} ${MESES[m[2] - 1]} ${m[1]}` : String(iso ?? '');
+}
+
+// Só caminho relativo dentro da pasta do glossário (ex.: "img/cobre-01.jpg").
+function caminhoRelativo(caminho) {
+  return typeof caminho === 'string' && caminho !== ''
+    && !/^([a-z][a-z0-9+.-]*:|\/|\\)/i.test(caminho) && !caminho.split(/[\\/]/).includes('..');
+}
+
+function urlSegura(url) {
+  return typeof url === 'string' && /^https?:\/\//i.test(url);
+}
+
+globalThis.GlossarioDados = {
+  CATEGORIAS_COLUNA, NIVEIS, normalizar, filtrar, agrupar, chaveCelula, montarMatriz, montarHistorico,
+  montarCompatibilidade, agruparPorMarca, agruparPorNivel, linhasFicha,
+  resultadosQueUsam, imagensDe, formatarData, caminhoRelativo, urlSegura,
+};
+
+/* ===== PÁGINA =====
+   Só roda no navegador. Lê materiais.json uma vez e desenha a vista que o hash pede:
+   vazio = lista, #matriz, #compatibilidade, #historico, #<id> = ficha do verbete. */
+if (typeof document !== 'undefined') {
+  const D = globalThis.GlossarioDados;
+  const $ = id => document.getElementById(id);
+  const VISTAS = ['lista', 'verbete', 'matriz', 'compatibilidade', 'historico'];
+  const SETAS = { ArrowLeft: [0, -1], ArrowRight: [0, 1], ArrowUp: [-1, 0], ArrowDown: [1, 0] };
+  const CAMPOS_CONHECIDOS = new Set(['id', 'nome', 'categoria', 'status', 'exemplo', 'resumo', 'detalhes', 'uso_no_projeto',
+    'amostra_cor', 'custo', 'dificuldade', 'seguranca', 'fornecedores', 'relacionados', 'imagens', 'referencias', 'historico', 'combina', 'marca', 'tipo', 'ficha', 'compatibilidade']);
+
+  const estado = {
+    dados: null,
+    indice: new Map(),
+    filtro: { texto: '', categoria: '', status: '' },
+    marca: null,   // filtro da grade de compatibilidade: null = todas, '' = tipos genéricos
+    celula: null,  // célula escolhida na grade: { linha, coluna }
+    vista: '',
+    rolagemLista: 0,
+  };
+
+  // Cria um elemento. `text` vira textContent (dado do JSON nunca entra como HTML) e `fundo` pinta o background.
+  function el(tag, attrs, ...filhos) {
+    const no = document.createElement(tag);
+    for (const [chave, valor] of Object.entries(attrs ?? {})) {
+      if (valor == null || valor === false) continue;
+      if (chave === 'class') no.className = valor;
+      else if (chave === 'text') no.textContent = valor;
+      else if (chave === 'fundo') no.style.background = valor;
+      else no.setAttribute(chave, valor);
+    }
+    for (const filho of filhos.flat()) if (filho != null && filho !== false) no.append(filho);
+    return no;
+  }
+
+  const nomeDe = (lista, id) => lista.find(item => item.id === id)?.nome ?? id ?? '';
+  const plural = (n, um, varios) => `${n} ${n === 1 ? um : varios}`;
+  const primeiro = (obj, ...chaves) => chaves.map(c => obj?.[c]).find(v => v != null && v !== '');
+  const comoTexto = valor => typeof valor === 'string' ? valor : JSON.stringify(valor);
+  // A cor de amostra do verbete, ou null se não for uma cor CSS válida.
+  const corDe = v => typeof v.amostra_cor === 'string' && CSS.supports('color', v.amostra_cor) ? v.amostra_cor : null;
+
+  function pilula(statusId) {
+    return el('span', { class: 'pilula', 'data-status': statusId ?? '' },
+      el('span', { class: 'ponto' }), nomeDe(estado.dados.status, statusId) || 'sem status');
+  }
+
+  function dificuldade(nota, rotulo) {
+    const n = Math.round(Number(nota));
+    if (!(n >= 1 && n <= 5)) return el('span', { class: 'dif', text: `${rotulo} sem nota`.trim() });
+    return el('span', { class: 'dif', role: 'img', 'aria-label': `Dificuldade ${n} de 5`, title: `Dificuldade ${n} de 5` },
+      rotulo ? el('span', { text: rotulo }) : null,
+      el('span', { class: 'dif-barras' }, [1, 2, 3, 4, 5].map(i => el('span', { class: i <= n ? 'on' : '' }))),
+      el('span', { text: `${n}/5` }));
+  }
+
+  // Amostra do verbete: a primeira imagem ou, sem imagem (ou se ela não carregar), a cor de `amostra_cor`.
+  function amostra(v) {
+    const caixa = el('div', { class: 'amostra' });
+    const pintar = () => {
+      if (corDe(v)) {
+        caixa.classList.add('amostra--cor');
+        caixa.style.setProperty('--cor', corDe(v));
+      } else {
+        caixa.classList.add('amostra--vazia');
+        caixa.append(el('span', { class: 'mono', text: 'sem amostra' }));
+      }
+    };
+    const imagem = D.imagensDe(v, estado.indice).imagens[0];
+    if (D.caminhoRelativo(imagem?.arquivo)) {
+      const img = el('img', { src: imagem.arquivo, alt: imagem.legenda ?? '', loading: 'lazy', decoding: 'async' });
+      img.addEventListener('error', () => { img.remove(); pintar(); });
+      caixa.append(img);
+    } else pintar();
+    return caixa;
+  }
+
+  // Link para outro verbete, com o ponto do status. Id que não existe aparece tracejado.
+  function refVerbete(id) {
+    const v = estado.indice.get(id);
+    if (!v) return el('span', { class: 'ref ref--falta', title: 'Não há verbete com esse id em materiais.json' }, el('code', { text: String(id) }), 'sem verbete');
+    return el('a', { class: 'ref', href: '#' + v.id, 'data-status': v.status ?? '', title: nomeDe(estado.dados.status, v.status) },
+      el('span', { class: 'ponto' }), v.nome);
+  }
+  const listaRefs = ids => el('ul', { class: 'refs' }, ids.map(id => el('li', null, refVerbete(id))));
+
+  const secao = (titulo, ...conteudo) => el('section', { class: 'secao' }, el('h3', { text: titulo }), conteudo);
+  const nenhum = texto => el('p', { class: 'mudo', text: texto });
+  const voltar = () => el('a', { class: 'voltar', href: '#' }, '← Todos os verbetes');
+  // Desenho do nível de compatibilidade. O nome do nível vai sempre em texto ao lado ou no rótulo de quem o usa.
+  const forma = nivel => el('span', { class: 'forma', 'data-nivel': nivel, 'aria-hidden': 'true' });
+  // Link "Fonte: dominio.com", ou null se a URL não for http/https.
+  const linkFonte = url => D.urlSegura(url)
+    ? el('a', { href: url, target: '_blank', rel: 'noopener noreferrer', text: `Fonte: ${url.replace(/^https?:\/\/(www\.)?/i, '').split(/[/?#]/)[0]}` })
+    : null;
+
+  /* ----- Lista ----- */
+
+  function montarFiltros() {
+    const grupo = (caixa, campo, rotuloTodos, opcoes) => caixa.replaceChildren(
+      ...[{ id: '', nome: rotuloTodos }, ...opcoes].map(opcao => {
+        const botao = el('button', { type: 'button', class: 'chip', id: `chip-${campo}-${opcao.id || 'todos'}`, 'data-campo': campo, 'data-valor': opcao.id, title: opcao.descricao },
+          campo === 'status' && opcao.id ? el('span', { class: 'ponto', 'data-status': opcao.id }) : null,
+          el('span', { text: opcao.nome }), el('span', { class: 'chip-n' }));
+        botao.addEventListener('click', () => { estado.filtro[campo] = opcao.id; desenharLista(); });
+        return botao;
+      }));
+    grupo($('filtro-categoria'), 'categoria', 'Todas', estado.dados.categorias);
+    grupo($('filtro-status'), 'status', 'Todos', estado.dados.status);
+    $('busca').addEventListener('input', evento => { estado.filtro.texto = evento.target.value; desenharLista(); });
+  }
+
+  function cartao(v) {
+    return el('a', { class: 'cartao', href: '#' + v.id },
+      amostra(v),
+      v.exemplo ? el('span', { class: 'selo', text: 'exemplo' }) : null,
+      el('div', { class: 'cartao-etiqueta mono', text: v.id }),
+      el('div', { class: 'cartao-corpo' },
+        v.marca ? el('span', { class: 'mono', text: v.marca }) : null,
+        el('h3', { text: v.nome }), el('p', { text: v.resumo })),
+      el('div', { class: 'cartao-pe' }, pilula(v.status), dificuldade(v.dificuldade, 'dif.')));
+  }
+
+  function desenharLista() {
+    const { verbetes, categorias } = estado.dados;
+    const f = estado.filtro;
+    const achados = D.filtrar(verbetes, f);
+
+    // Cada chip mostra quantos verbetes sobram se ele for o escolhido, mantidos os outros critérios.
+    for (const chip of document.querySelectorAll('.chip[data-campo]')) {
+      const { campo, valor } = chip.dataset;
+      chip.setAttribute('aria-pressed', String(f[campo] === valor));
+      chip.querySelector('.chip-n').textContent = D.filtrar(verbetes, { ...f, [campo]: valor }).length;
+    }
+    $('contagem').textContent = achados.length === verbetes.length
+      ? plural(verbetes.length, 'verbete', 'verbetes')
+      : `${achados.length} de ${plural(verbetes.length, 'verbete', 'verbetes')}`;
+
+    if (!achados.length) {
+      const limpar = el('button', { type: 'button', class: 'chip', id: 'limpar-filtros', text: 'Limpar busca e filtros' });
+      limpar.addEventListener('click', () => {
+        estado.filtro = { texto: '', categoria: '', status: '' };
+        $('busca').value = '';
+        desenharLista();
+        $('busca').focus();
+      });
+      $('grupos').replaceChildren(el('div', { class: 'estado' },
+        el('h2', { text: verbetes.length ? 'Nenhum verbete com esses critérios' : 'materiais.json ainda não tem verbetes' }),
+        verbetes.length ? el('div', null, limpar) : nenhum('Adicione o primeiro em docs/glossario/materiais.json.')));
+      return;
+    }
+    $('grupos').replaceChildren(...D.agrupar(achados, categorias).map(g => el('section', { class: 'grupo' },
+      el('div', { class: 'grupo-topo' },
+        el('h2', null, g.categoria.nome, el('span', { class: 'mono', text: g.verbetes.length })),
+        g.categoria.descricao ? el('p', { class: 'mudo', text: g.categoria.descricao }) : null),
+      el('div', { class: 'grade' }, g.verbetes.map(cartao)))));
+  }
+
+  /* ----- Ficha do verbete ----- */
+
+  // Item de fornecedor ou referência: nome (com link, se houver URL http/https) e os demais campos como texto.
+  function itemGenerico(item, chavesNome, chavesData) {
+    if (typeof item !== 'object' || item === null) return el('li', { text: String(item) });
+    const nome = primeiro(item, ...chavesNome) ?? item.url ?? 'sem nome';
+    const data = primeiro(item, ...chavesData);
+    const usadas = new Set([...chavesNome, ...chavesData, 'url']);
+    const resto = Object.entries(item).filter(([chave, valor]) => !usadas.has(chave) && valor != null && valor !== '');
+    return el('li', null,
+      D.urlSegura(item.url) ? el('a', { href: item.url, target: '_blank', rel: 'noopener noreferrer', text: nome }) : el('span', { text: nome }),
+      data ? el('span', { class: 'mudo', text: ` · consultado em ${D.formatarData(data)}` }) : null,
+      resto.map(([chave, valor]) => el('span', { class: 'mudo', text: ` · ${chave}: ${comoTexto(valor)}` })));
+  }
+
+  function figura(imagem) {
+    const arquivo = imagem?.arquivo;
+    let quadro;
+    if (D.caminhoRelativo(arquivo)) {
+      quadro = el('img', { src: arquivo, alt: imagem.legenda ?? '', loading: 'lazy', decoding: 'async' });
+      quadro.addEventListener('error', () => quadro.replaceWith(el('div', { class: 'falta mono', text: `Imagem não encontrada: ${arquivo}` })));
+    } else {
+      quadro = el('div', { class: 'falta mono', text: `Caminho fora da pasta do glossário: ${comoTexto(arquivo ?? '')}` });
+    }
+    return el('figure', null, quadro, el('figcaption', null,
+      el('span', { text: imagem?.legenda || 'Sem legenda' }),
+      el('span', { class: 'mudo', text: `Crédito: ${imagem?.credito || 'não informado'} · Licença: ${imagem?.licenca || 'não informada'}` }),
+      D.urlSegura(imagem?.fonte) ? el('a', { href: imagem.fonte, target: '_blank', rel: 'noopener noreferrer', text: 'Fonte da imagem' }) : null));
+  }
+
+  function desenharVerbete(id) {
+    const caixa = $('vista-verbete');
+    const v = estado.indice.get(id);
+    if (!v) {
+      caixa.replaceChildren(voltar(), el('div', { class: 'estado' },
+        el('h2', { text: 'Verbete não encontrado' }),
+        el('p', null, 'Nenhum verbete tem o id ', el('code', { text: id }), ' em materiais.json.')));
+      return;
+    }
+    const { categorias, status, verbetes } = estado.dados;
+    const descricaoStatus = status.find(s => s.id === v.status)?.descricao;
+    const usos = v.categoria === 'resultado' ? [] : D.resultadosQueUsam(verbetes, v.id);
+    const historico = D.montarHistorico([v]);
+    const outros = Object.entries(v).filter(([chave]) => !CAMPOS_CONHECIDOS.has(chave));
+    const tecnica = D.linhasFicha(v.ficha);
+    const niveis = D.agruparPorNivel(v.compatibilidade);
+    const fotos = D.imagensDe(v, estado.indice);
+    const texto = (titulo, valor) => secao(titulo, valor ? el('p', { class: 'prosa', text: valor }) : nenhum('Ainda não preenchido.'));
+
+    const topo = el('div', { class: 'ficha-topo' },
+      el('p', { class: 'mono', text: `${nomeDe(categorias, v.categoria)} · ${v.id}` }),
+      el('h2', { text: v.nome }),
+      el('div', { class: 'ficha-marcas' }, pilula(v.status), dificuldade(v.dificuldade, 'dificuldade'),
+        v.exemplo ? el('span', { class: 'selo', text: 'exemplo' }) : null),
+      v.resumo ? el('p', { class: 'ficha-resumo', text: v.resumo }) : null);
+
+    const linha = (rotulo, ...valor) => [el('dt', { class: 'mono', text: rotulo }), el('dd', null, valor)];
+    const lado = el('aside', { class: 'ficha-lado' }, amostra(v), el('dl', { class: 'ficha-dados' },
+      linha('Categoria', nomeDe(categorias, v.categoria) || 'sem categoria'),
+      v.marca ? linha('Marca', String(v.marca)) : null,
+      v.tipo ? linha('Tipo', refVerbete(v.tipo)) : null,
+      linha('Status', nomeDe(status, v.status) || 'sem status', descricaoStatus ? el('span', { class: 'mudo', text: descricaoStatus }) : null),
+      linha('Dificuldade', dificuldade(v.dificuldade, '')),
+      linha('Custo', v.custo || 'não informado'),
+      linha('Cor da amostra', corDe(v) ? el('code', { text: v.amostra_cor }) : 'não informada'),
+      linha('Exemplo', v.exemplo ? 'Sim. Verbete provisório, feito para montar a página.' : 'Não')));
+
+    const corpo = el('div', { class: 'ficha-corpo' },
+      v.categoria === 'resultado' ? secao('Combinação',
+        el('dl', { class: 'receita' },
+          el('dt', { class: 'mono', text: 'Material' }),
+          el('dd', null, v.combina?.material ? refVerbete(v.combina.material) : nenhum('Sem material em combina.')),
+          el('dt', { class: 'mono', text: 'Processos, na ordem' }),
+          el('dd', null, v.combina?.processos?.length
+            ? el('ol', null, v.combina.processos.map(p => el('li', null, refVerbete(p))))
+            : nenhum('Sem processos em combina.')))) : null,
+      texto('Detalhes', v.detalhes),
+      tecnica.length ? secao('Ficha técnica', el('table', { class: 'tecnica' }, el('tbody', null,
+        tecnica.map(l => el('tr', null, el('th', { scope: 'row', text: l.rotulo }), el('td', { text: l.valor })))))) : null,
+      niveis.length ? secao('Processos que aceita',
+        el('div', { class: 'niveis' }, niveis.map(g => el('div', { class: 'nivel-grupo' },
+          el('h4', null, forma(g.nivel.id), g.nivel.nome, el('span', { class: 'mono', text: g.itens.length })),
+          el('ul', { class: 'aceita' }, g.itens.map(c => el('li', null,
+            refVerbete(c.processo),
+            el('div', { class: 'aceita-nota' }, el('span', { text: c.nota ? String(c.nota) : 'Sem nota.' }), linkFonte(c.fonte)))))))),
+        el('p', { class: 'mudo' }, el('a', { href: '#compatibilidade', text: 'Comparar com as outras resinas' }))) : null,
+      texto('Uso no projeto', v.uso_no_projeto),
+      el('section', { class: 'secao seguranca' }, el('h3', { text: 'Segurança' }),
+        el('p', { class: 'prosa', text: v.seguranca || 'Ainda não preenchido.' })),
+      usos.length ? secao('Resultados com este verbete', listaRefs(usos.map(r => r.id))) : null,
+      secao('Imagens', fotos.imagens.length ? [
+        fotos.doTipo ? el('p', { class: 'mudo' }, 'Sem foto livre deste produto. Fotos do tipo ', refVerbete(fotos.doTipo.id), '.') : null,
+        el('div', { class: 'galeria' }, fotos.imagens.map(figura))] : nenhum('Nenhuma foto ainda.')),
+      secao('Relacionados', v.relacionados?.length ? listaRefs(v.relacionados) : nenhum('Nenhum verbete relacionado.')),
+      secao('Fornecedores', v.fornecedores?.length
+        ? el('ul', { class: 'lista' }, v.fornecedores.map(f => itemGenerico(f, ['nome', 'titulo'], [])))
+        : nenhum('Nenhum fornecedor registrado.')),
+      secao('Referências', v.referencias?.length
+        ? el('ul', { class: 'lista' }, v.referencias.map(r => itemGenerico(r, ['titulo', 'nome'], ['consultado_em', 'data_consulta', 'consulta', 'acesso'])))
+        : nenhum('Nenhuma referência registrada.')),
+      secao('Histórico', historico.length
+        ? el('ul', { class: 'lista' }, historico.map(h => el('li', null, el('span', { class: 'mono', text: D.formatarData(h.data) }), ' ', h.nota)))
+        : nenhum('Sem entradas.')),
+      outros.length ? secao('Outros campos', el('dl', { class: 'outros' },
+        outros.map(([chave, valor]) => [el('dt', { class: 'mono', text: chave }), el('dd', { text: comoTexto(valor) })]))) : null);
+
+    caixa.replaceChildren(voltar(), el('article', { class: 'ficha' }, topo, lado, corpo));
+  }
+
+  /* ----- Matriz ----- */
+
+  function desenharMatriz() {
+    const { verbetes, categorias, status } = estado.dados;
+    const m = D.montarMatriz(verbetes, categorias);
+    const colunas = m.grupos.flatMap(g => g.colunas.map((coluna, i) => ({ coluna, inicio: i === 0 })));
+    const inicial = id => (nomeDe(status, id) || '?').charAt(0).toUpperCase();
+    const topo = el('div', { class: 'vista-topo' },
+      el('h2', { text: 'Matriz' }),
+      el('p', { text: 'Como fica cada material base depois de cada processo. Cada marca é um verbete de resultado, na cor do status.' }));
+
+    if (!m.linhas.length || !colunas.length) {
+      $('vista-matriz').replaceChildren(topo, el('div', { class: 'estado' },
+        el('h2', { text: 'Ainda não dá para montar a matriz' }),
+        nenhum('Ela precisa de pelo menos um verbete de material base e um de processo, acabamento ou metalização.')));
+      return;
+    }
+
+    const preenchidas = Object.keys(m.celulas).length;
+    const total = m.linhas.length * colunas.length;
+    const resultados = verbetes.filter(v => v.categoria === 'resultado').length;
+    const legenda = el('ul', { class: 'legenda' }, status.map(s => el('li', { title: s.descricao },
+      el('span', { class: 'marca', 'data-status': s.id, text: inicial(s.id) }), s.nome)));
+
+    const tabela = el('table', { class: 'matriz' },
+      el('thead', null,
+        el('tr', null,
+          el('th', { class: 'canto mono', rowspan: '2', scope: 'col', text: 'Material base' }),
+          m.grupos.map(g => el('th', { class: 'gru ini mono', colspan: String(g.colunas.length), scope: 'colgroup', text: g.nome }))),
+        el('tr', null, colunas.map(({ coluna, inicio }) => el('th', { class: 'col' + (inicio ? ' ini' : ''), scope: 'col' },
+          el('a', { href: '#' + coluna.id, text: coluna.nome }))))),
+      el('tbody', null, m.linhas.map(linha => el('tr', null,
+        el('th', { class: 'lin', scope: 'row' }, el('a', { href: '#' + linha.id },
+          el('span', { class: 'ponto', fundo: corDe(linha) }), linha.nome)),
+        colunas.map(({ coluna, inicio }) => {
+          const marcas = m.celulas[D.chaveCelula(linha.id, coluna.id)] ?? [];
+          return el('td', { class: inicio ? 'ini' : '' }, marcas.length
+            ? el('span', { class: 'marcas' }, marcas.map(r => {
+              const rotulo = `${r.nome} (${nomeDe(status, r.status)})`;
+              return el('a', { class: 'marca', href: '#' + r.id, 'data-status': r.status ?? '', title: rotulo, 'aria-label': rotulo, text: inicial(r.status) });
+            }))
+            : el('span', { class: 'nada', 'aria-hidden': 'true', text: '·' }));
+        })))));
+
+    $('vista-matriz').replaceChildren(topo, legenda,
+      el('p', { class: 'contagem', text: `${plural(resultados, 'resultado', 'resultados')} · ${preenchidas} de ${plural(total, 'combinação preenchida', 'combinações preenchidas')}` }),
+      el('div', { class: 'matriz-rolo', role: 'region', 'aria-label': 'Matriz de materiais e processos', tabindex: '0' }, tabela),
+      m.fora.length ? secao('Resultados fora da matriz',
+        nenhum('O material não é um verbete base, ou nenhum processo de combina é coluna.'),
+        listaRefs(m.fora.map(r => r.id))) : '');
+  }
+
+  /* ----- Compatibilidade ----- */
+
+  // Grade resina × processo, com filtro por marca. Clique ou foco numa célula mostra a nota e a fonte no painel
+  // abaixo da grade. Só uma célula fica na ordem do Tab; as setas andam pelas outras.
+  function desenharCompatibilidade() {
+    const { verbetes, categorias } = estado.dados;
+    const grade = D.montarCompatibilidade(verbetes, categorias);
+    const topo = el('div', { class: 'vista-topo' },
+      el('h2', { text: 'Compatibilidade' }),
+      el('p', { text: 'Quais processos cada resina aceita. Escolha uma célula para ler a nota e abrir a fonte.' }));
+
+    if (!grade.linhas.length) {
+      $('vista-compatibilidade').replaceChildren(topo, el('div', { class: 'estado' },
+        el('h2', { text: 'Nenhum verbete tem compatibilidade ainda' }),
+        el('p', { class: 'mudo' }, 'A grade aparece quando um verbete de ', el('code', { text: 'materiais.json' }),
+          ' tiver o campo ', el('code', { text: 'compatibilidade' }), '.')));
+      return;
+    }
+
+    const grupos = D.agruparPorMarca(grade.linhas);
+    if (!grupos.some(g => g.marca === estado.marca)) estado.marca = null;
+    const visiveis = grupos.filter(g => estado.marca === null || g.marca === estado.marca);
+    const nVisiveis = visiveis.reduce((soma, g) => soma + g.verbetes.length, 0);
+
+    const opcoes = [{ marca: null, nome: 'Todas', n: grade.linhas.length }, ...grupos.map(g => ({ marca: g.marca, nome: g.nome, n: g.verbetes.length }))];
+    const filtro = el('div', { class: 'campo' },
+      el('span', { class: 'rotulo', id: 'rotulo-marca', text: 'Marca' }),
+      el('div', { class: 'chips', role: 'group', 'aria-labelledby': 'rotulo-marca' }, opcoes.map((opcao, i) => {
+        const chip = el('button', { type: 'button', class: 'chip', id: `chip-marca-${i}`, 'aria-pressed': String(opcao.marca === estado.marca) },
+          el('span', { text: opcao.nome }), el('span', { class: 'chip-n', text: opcao.n }));
+        chip.addEventListener('click', () => {
+          estado.marca = opcao.marca;
+          desenharCompatibilidade();
+          $(`chip-marca-${i}`).focus();
+        });
+        return chip;
+      })));
+
+    // Colunas vizinhas da mesma categoria ficam sob um só cabeçalho de grupo, como na matriz.
+    const faixas = [];
+    const colunas = grade.colunas.map(coluna => {
+      const inicio = faixas.at(-1)?.categoria !== coluna.categoria;
+      if (inicio) faixas.push({ categoria: coluna.categoria, n: 0 });
+      faixas.at(-1).n += 1;
+      return { ...coluna, inicio };
+    });
+
+    const painel = el('div', { class: 'painel', 'aria-live': 'polite' });
+    const itens = [];  // itens[linha][coluna] = { botao, linha, coluna, celula }, só das linhas visíveis
+    function selecionar(item) {
+      // O clique chega logo depois do foco na mesma célula: não redesenha o painel de novo.
+      if (item.botao.getAttribute('aria-pressed') === 'true') return;
+      for (const outro of itens.flat()) {
+        outro.botao.tabIndex = outro === item ? 0 : -1;
+        outro.botao.setAttribute('aria-pressed', String(outro === item));
+      }
+      const { linha, coluna, celula } = item;
+      estado.celula = { linha: linha.id, coluna: coluna.id };
+      painel.replaceChildren(
+        el('h3', null, el('a', { href: '#' + linha.id, text: linha.nome }), ' × ',
+          coluna.existe ? el('a', { href: '#' + coluna.id, text: coluna.nome }) : coluna.nome),
+        el('p', { class: 'painel-nivel' }, forma(celula.nivel), nomeDe(D.NIVEIS, celula.nivel)),
+        el('p', { class: 'prosa', text: celula.nota || (celula.citado ? 'Sem nota.' : 'O verbete desta linha não cita este processo.') }),
+        linkFonte(celula.fonte) ?? (celula.citado ? nenhum('Sem fonte registrada.') : ''));
+    }
+
+    const tabela = el('table', { class: 'matriz compat' },
+      el('thead', null,
+        el('tr', null,
+          el('th', { class: 'canto mono', rowspan: '2', scope: 'col', text: 'Material' }),
+          faixas.map(f => el('th', { class: 'gru ini mono', colspan: String(f.n), scope: 'colgroup', text: nomeDe(categorias, f.categoria) || 'Sem verbete' }))),
+        el('tr', null, colunas.map(coluna => el('th', { class: 'col' + (coluna.inicio ? ' ini' : ''), scope: 'col' },
+          coluna.existe ? el('a', { href: '#' + coluna.id, text: coluna.nome }) : el('span', { text: coluna.nome }))))),
+      visiveis.map(g => el('tbody', null,
+        el('tr', null,
+          el('th', { class: 'grupo-marca mono', scope: 'rowgroup', text: g.nome }),
+          el('td', { class: 'grupo-resto', colspan: String(colunas.length) })),
+        g.verbetes.map(linha => {
+          const daLinha = colunas.map(coluna => {
+            const celula = grade.celulas[D.chaveCelula(linha.id, coluna.id)];
+            const rotulo = `${linha.nome} × ${coluna.nome}: ${nomeDe(D.NIVEIS, celula.nivel)}`;
+            const botao = el('button', { type: 'button', class: 'nivel', tabindex: '-1', 'aria-pressed': 'false', title: rotulo, 'aria-label': rotulo },
+              forma(celula.nivel));
+            const item = { botao, linha, coluna, celula };
+            botao.addEventListener('focus', () => selecionar(item));
+            botao.addEventListener('click', () => selecionar(item));
+            return item;
+          });
+          itens.push(daLinha);
+          return el('tr', null,
+            el('th', { class: 'lin', scope: 'row' }, el('a', { href: '#' + linha.id },
+              el('span', { class: 'ponto', fundo: corDe(linha) }), linha.nome)),
+            daLinha.map(item => el('td', { class: item.coluna.inicio ? 'ini' : '' }, item.botao)));
+        }))));
+
+    tabela.addEventListener('keydown', evento => {
+      const passo = SETAS[evento.key];
+      const l = itens.findIndex(linha => linha.some(item => item.botao === evento.target));
+      if (!passo || l === -1) return;
+      evento.preventDefault();
+      const c = itens[l].findIndex(item => item.botao === evento.target);
+      itens[l + passo[0]]?.[c + passo[1]]?.botao.focus();
+    });
+
+    const escolhida = itens.flat().find(item => item.linha.id === estado.celula?.linha && item.coluna.id === estado.celula?.coluna);
+    if (escolhida) selecionar(escolhida);
+    else {
+      itens[0][0].botao.tabIndex = 0;
+      painel.append(nenhum('Nenhuma célula escolhida. Clique numa célula, ou chegue com Tab e ande com as setas, para ver a nota e a fonte.'));
+    }
+
+    $('vista-compatibilidade').replaceChildren(topo, filtro,
+      el('ul', { class: 'legenda' }, D.NIVEIS.map(nivel => el('li', null, forma(nivel.id), nivel.nome))),
+      el('p', { class: 'contagem', role: 'status', text: `${nVisiveis === grade.linhas.length ? '' : `${nVisiveis} de `}${plural(grade.linhas.length, 'material', 'materiais')} · ${plural(colunas.length, 'processo', 'processos')}` }),
+      el('div', { class: 'matriz-rolo compat-rolo', role: 'region', 'aria-label': 'Grade de compatibilidade entre materiais e processos' }, tabela),
+      painel);
+  }
+
+  /* ----- Histórico ----- */
+
+  function desenharHistorico() {
+    const entradas = D.montarHistorico(estado.dados.verbetes);
+    const dias = [];
+    for (const entrada of entradas) {
+      if (dias.at(-1)?.data !== entrada.data) dias.push({ data: entrada.data, entradas: [] });
+      dias.at(-1).entradas.push(entrada);
+    }
+    $('vista-historico').replaceChildren(
+      el('div', { class: 'vista-topo' },
+        el('h2', { text: 'Histórico' }),
+        el('p', { text: `${plural(entradas.length, 'entrada', 'entradas')} de todos os verbetes, da mais recente para a mais antiga.` })),
+      entradas.length
+        ? el('div', { class: 'dias' }, dias.map(dia => el('section', { class: 'dia' },
+          el('h3', { text: D.formatarData(dia.data) || 'sem data' }),
+          el('ul', null, dia.entradas.map(e => el('li', null, el('a', { href: '#' + e.id, text: e.nome }), el('span', { text: e.nota })))))))
+        : nenhum('Nenhum verbete tem histórico ainda.'));
+  }
+
+  /* ----- Rotas e carga ----- */
+
+  function navegar(focar) {
+    const hash = location.hash.slice(1);
+    const vista = hash === '' ? 'lista' : ['matriz', 'compatibilidade', 'historico'].includes(hash) ? hash : 'verbete';
+    if (estado.vista === 'lista' && vista !== 'lista') estado.rolagemLista = window.scrollY;
+    for (const nome of VISTAS) $('vista-' + nome).hidden = nome !== vista;
+    for (const aba of document.querySelectorAll('.abas a')) {
+      if (aba.dataset.vista === (vista === 'verbete' ? 'lista' : vista)) aba.setAttribute('aria-current', 'page');
+      else aba.removeAttribute('aria-current');
+    }
+    if (vista === 'lista') desenharLista();
+    else if (vista === 'matriz') desenharMatriz();
+    else if (vista === 'compatibilidade') desenharCompatibilidade();
+    else if (vista === 'historico') desenharHistorico();
+    else desenharVerbete(hash);
+    window.scrollTo(0, vista === 'lista' ? estado.rolagemLista : 0);
+    if (focar && vista !== 'lista') {
+      const titulo = $('vista-' + vista).querySelector('h2');
+      if (titulo) { titulo.tabIndex = -1; titulo.focus({ preventScroll: true }); }
+    }
+    estado.vista = vista;
+  }
+
+  function mostrarErro(erro) {
+    const doDisco = location.protocol === 'file:';
+    $('vista-estado').replaceChildren(
+      el('h2', { text: 'Não deu para carregar materiais.json' }),
+      doDisco
+        ? el('p', null, 'A página foi aberta direto do disco (file://). Nesse modo o navegador bloqueia a leitura de arquivos vizinhos, então os dados não chegam.')
+        : el('p', null, 'Motivo: ', el('code', { text: erro?.message || String(erro) }), '.'),
+      doDisco
+        ? el('p', null, 'Rode ', el('code', { text: 'node docs/glossario/validar.mjs' }), ', que gera materiais.js, e abra a página de novo.')
+        : el('p', null, 'Confira se ', el('code', { text: 'materiais.json' }), ' está publicado ao lado da página e se é um JSON válido.'));
+  }
+
+  async function carregar() {
+    try {
+      // materiais.js (gerado por validar.mjs) permite abrir a página direto do disco; publicada, ela lê o JSON.
+      let dados = window.MATERIAIS;
+      if (!dados) {
+        const resposta = await fetch('materiais.json', { cache: 'no-cache' });
+        if (!resposta.ok) throw new Error(`o servidor respondeu ${resposta.status} ${resposta.statusText}`.trim());
+        dados = await resposta.json();
+      }
+      if (!Array.isArray(dados?.verbetes)) throw new Error('o arquivo não tem a lista "verbetes"');
+      estado.dados = {
+        ...dados,
+        categorias: Array.isArray(dados.categorias) ? dados.categorias : [],
+        status: Array.isArray(dados.status) ? dados.status : [],
+        verbetes: dados.verbetes.filter(v => v && typeof v.id === 'string'),
+      };
+    } catch (erro) {
+      mostrarErro(erro);
+      return;
+    }
+    const { verbetes, versao, atualizado_em } = estado.dados;
+    estado.indice = new Map(verbetes.map(v => [v.id, v]));
+    $('vista-estado').hidden = true;
+    $('topo-linha').textContent = `Glossário do ateliê · ${plural(verbetes.length, 'verbete', 'verbetes')}`;
+    $('cartela').replaceChildren(...verbetes
+      .filter(corDe).map(v => el('span', { fundo: corDe(v) })));
+    $('rodape-versao').replaceChildren('Dados: ', el('code', { text: 'materiais.json' }),
+      ` versão ${versao ?? 'sem número'}, atualizado em ${D.formatarData(atualizado_em) || 'data não informada'}.`);
+    montarFiltros();
+    window.addEventListener('hashchange', () => navegar(true));
+    navegar(false);
+  }
+
+  carregar();
+}
+</script>
