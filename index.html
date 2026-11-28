@@ -573,7 +573,7 @@ if (typeof document !== 'undefined') {
       else if (chave === 'fundo') no.style.background = valor;
       else no.setAttribute(chave, valor);
     }
-    for (const filho of filhos.flat()) if (filho != null && filho !== false) no.append(filho);
+    for (const filho of filhos.flat(Infinity)) if (filho != null && filho !== false) no.append(filho);
     return no;
   }
 
@@ -790,9 +790,13 @@ if (typeof document !== 'undefined') {
       el('section', { class: 'secao seguranca' }, el('h3', { text: 'Segurança' }),
         el('p', { class: 'prosa', text: v.seguranca || 'Ainda não preenchido.' })),
       usos.length ? secao('Resultados com este verbete', listaRefs(usos.map(r => r.id))) : null,
-      secao('Imagens', fotos.imagens.length ? [
-        fotos.doTipo ? el('p', { class: 'mudo' }, 'Sem foto livre deste produto. Fotos do tipo ', refVerbete(fotos.doTipo.id), '.') : null,
-        el('div', { class: 'galeria' }, fotos.imagens.map(figura))] : nenhum('Nenhuma foto ainda.')),
+      secao('Imagens', [
+        // Foto de fabricante não tem licença livre: a página só aponta para ela.
+        !v.imagens?.length && D.urlSegura(v.pagina_produto) ? el('p', { class: 'mudo' }, 'Foto oficial do produto: ',
+          el('a', { href: v.pagina_produto, target: '_blank', rel: 'noopener noreferrer', text: `página do fabricante (${v.pagina_produto.replace(/^https?:\/\/(www\.)?/i, '').split(/[/?#]/)[0]})` }), '.') : null,
+        ...(fotos.imagens.length ? [
+          fotos.doTipo ? el('p', { class: 'mudo' }, 'Sem foto livre deste produto. Fotos do tipo ', refVerbete(fotos.doTipo.id), '.') : null,
+          el('div', { class: 'galeria' }, fotos.imagens.map(figura))] : [nenhum('Nenhuma foto ainda.')])]),
       secao('Relacionados', v.relacionados?.length ? listaRefs(v.relacionados) : nenhum('Nenhum verbete relacionado.')),
       secao('Fornecedores', v.fornecedores?.length
         ? el('ul', { class: 'lista' }, v.fornecedores.map(f => itemGenerico(f, ['nome', 'titulo'], [])))
